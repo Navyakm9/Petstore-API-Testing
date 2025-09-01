@@ -1,0 +1,2915 @@
+{
+	"info": {
+		"_postman_id": "70bc8ad9-2448-47d4-850f-63e1d98fb8c5",
+		"name": "Petstore API Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24334160"
+	},
+	"item": [
+		{
+			"name": "Swagger petstore API testing suite positive testcases",
+			"item": [
+				{
+					"name": "pet",
+					"item": [
+						{
+							"name": "Add a new pet to the store",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const response = pm.response.json();\r",
+											"pm.environment.set(\"petID\", response.id);\r",
+											"pm.environment.set(\"tagName\", response.tags[0].name);\r",
+											"pm.environment.set(\"petstatus\", response.status);\r",
+											"// This test should pass if the status code is 200\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"//This test should pass if the response time is less than 3000ms\r",
+											"pm.test(\"Response time is less than 3000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+											"});\r",
+											"//This test should pass if the response body contains name matches the request body name\r",
+											"const requestData = pm.request.body ? JSON.parse(pm.request.body.raw) : {}; // Fixed the reference to request body\r",
+											"const pet = response; // Fixed the reference to response\r",
+											"pm.test(\"Response body contains name matches\", function () {\r",
+											"    pm.expect(pet.name).to.eql(requestData.name);\r",
+											"});\r",
+											"//This test should pass if the response body contains status matches the request body status\r",
+											"pm.test(\"Response body contains status matches\", function () {\r",
+											"    pm.expect(pet.status).to.eql(requestData.status);\r",
+											"});\r",
+											"//This test should pass if the response body photoUrls matches the request body photoUrls\r",
+											"pm.test(\"Response body contains photoUrls matches\", function () {\r",
+											"    pm.expect(pet.photoUrls).to.eql(requestData.photoUrls);\r",
+											"});\r",
+											"//This test should pass if the response body contains tags matches the request body tags\r",
+											"pm.test(\"Response body contains tags matches\", function () {\r",
+											"    pm.expect(pet.tags).to.eql(requestData.tags);\r",
+											"});\r",
+											"//This test should pass if the response body contains category.id matches the request body category.id\r",
+											"pm.test(\"Response body contains category.id matches\", function () {\r",
+											"    pm.expect(pet.category.id).to.eql(requestData.category.id);\r",
+											"});\r",
+											"//This test should pass if the response body contains category.name matches the request body category.name\r",
+											"pm.test(\"Response body contains category.name\", function () {\r",
+											"    pm.expect(pet.category.name).to.eql(requestData.category.name);\r",
+											"});\r",
+											"//This test should pass if the response body contains category matches the request body category    \r",
+											"pm.test(\"Response body contains category matches\", function () {\r",
+											"    pm.expect(pet.category).to.eql(requestData.category);\r",
+											"});\r",
+											"//This test should pass if the response body contains id matches the request body id\r",
+											"pm.test(\"Response body contains id matches\", function () {\r",
+											"    pm.expect(pet.id).to.eql(requestData.id);\r",
+											"});\r",
+											"//This test should pass if the response body contains tags.name matches the request body tags.name  \r",
+											"pm.test(\"Response body contains tags.name matches\", function () {   \r",
+											"    pm.expect(pet.tags[0].name).to.eql(requestData.tags[0].name);\r",
+											"});\r",
+											"//This test should pass if the response body contains tags.id matches the request body tags.id    \r",
+											"pm.test(\"Response body contains tags.id matches\", function () {\r",
+											"    pm.expect(pet.tags[0].id).to.eql(requestData.tags[0].id); // Fixed syntax error\r",
+											"});\r",
+											"//This test should pass if the response body contains id is not null    \r",
+											"pm.test(\"Response body contains id\", function () {\r",
+											"    pm.expect(pet.id).to.not.be.null; // Fixed reference to response\r",
+											"});\r",
+											"//This test should pass if the content type present\r",
+											"pm.test(\"Content-Type is present\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 1017,\r\n  \"category\": {\r\n    \"id\": 1,\r\n    \"name\": \"dog1\"\r\n  },\r\n  \"name\": \"tomyy\",\r\n  \"photoUrls\": [\r\n    \"https://example.com/photo.jpg\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 1,\r\n      \"name\": \"tag1\"\r\n    }\r\n  ],\r\n  \"status\": \"available\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/pet",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"pet"
+									]
+								},
+								"description": "Generated from cURL: curl -X 'POST' \\\r\n  'https://petstore3.swagger.io/api/v3/pet' \\\r\n  -H 'accept: application/json' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"id\": 10,\r\n  \"name\": \"doggie\",\r\n  \"category\": {\r\n    \"id\": 1,\r\n    \"name\": \"Dogs\"\r\n  },\r\n  \"photoUrls\": [\r\n    \"string\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 0,\r\n      \"name\": \"string\"\r\n    }\r\n  ],\r\n  \"status\": \"available\"\r\n}'"
+							},
+							"response": []
+						},
+						{
+							"name": "find the pet by ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"console.log(\"Resolved petID:\", pm.environment.get(\"petID\"));\r",
+											"//This test should pass if status code is 200\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"//This test should pass if response time is less than 3000ms\r",
+											"pm.test(\"Response time is less than 3000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+											"});\r",
+											"//This test should pass if response body contains the string \"OK\"\r",
+											"pm.test(\"Status code name has string\", function () {\r",
+											"    pm.response.to.have.status(\"OK\");\r",
+											"});\r",
+											"//This test should pass if response body has id it not to be null\r",
+											"pm.test(\"response has id\",()=>{\r",
+											"    pm.expect(pm.response.json().id).to.not.be.null;\r",
+											"});\r",
+											"//This test should pass if response has valid id and it is a number\r",
+											"pm.test(\"Response has valid id\",()=>{\r",
+											"    pm.expect(pm.response.json().id).to.be.a('number');\r",
+											"});\r",
+											"//This test should pass if response has pet name\r",
+											"pm.test(\"Response has pet name\",()=>{\r",
+											"    pm.expect(pm.response.json().name).to.not.be.null;\r",
+											"});\r",
+											"//This test should pass if response has valid pet name that to string\r",
+											"pm.test(\"Response has valid pet name\", () => {\r",
+											"    pm.expect(pm.response.json().name).to.be.a('string');\r",
+											"});\r",
+											"//This test should pass if response has valid pet status\r",
+											"pm.test(\"Response has valid pet status\", () => {\r",
+											"    pm.expect(pm.response.json().status).to.be.a('string');\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json"
+									},
+									{
+										"key": "",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/pet/{{petID}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"pet",
+										"{{petID}}"
+									]
+								},
+								"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://petstore3.swagger.io/api/v3/pet/1' \\\r\n  -H 'accept: application/json'"
+							},
+							"response": []
+						},
+						{
+							"name": "find pet by status",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if status code is 200\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"//This test should pass if response time is lessthan 3000ms\r",
+											"pm.test(\"Response time is less than 3000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+											"});\r",
+											"//This test should pass if response body is valid json\r",
+											"pm.test(\"Response body is valid JSON\", function () {\r",
+											"    pm.response.to.be.json;\r",
+											"});\r",
+											"//This test should pass if response body contain atleat one pet\r",
+											"pm.test(\"Response body contains at least one pet\", function () {\r",
+											"    pm.expect(pm.response.json().length).to.be.at.least(1);\r",
+											"});\r",
+											"//This test should apss if all pets have a valid status\r",
+											"pm.test(\"All pets have a valid status\", function () {\r",
+											"    const allPetsHaveValidStatus = (pets) => pets.every(pet => pet.status !== '');\r",
+											"    pm.expect(pm.response.json()).to.satisfy(allPetsHaveValidStatus);\r",
+											"});\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/pet/findByStatus?status={{petstatus}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"pet",
+										"findByStatus"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "{{petstatus}}"
+										}
+									]
+								},
+								"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://petstore3.swagger.io/api/v3/pet/findByStatus?status=available' \\\r\n  -H 'accept: application/json'"
+							},
+							"response": []
+						},
+						{
+							"name": "find pet by tags",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if status code is 200\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"//This test should pass if response time is less than 3000ms\r",
+											"pm.test(\"Response time is less than 3000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+											"});\r",
+											"//This test should pass if response body contains the string \"OK\"\r",
+											"pm.test(\"Status code name has string\", function () {\r",
+											"    pm.response.to.have.status(\"OK\");\r",
+											"});\r",
+											"//This test should pass if response body is JSON\r",
+											"pm.test(\"Response body is JSON\", function () {\r",
+											"    pm.response.to.be.json;\r",
+											"});\r",
+											"//This test should pass if response body contains the property \"name\" \r",
+											"pm.test(\"Response has valid tags.name\", () => {\r",
+											"    pm.expect(pm.response.json()[0].tags[0]).to.have.property('name');\r",
+											"});\r",
+											"//This test should pass if response body contains the property \"id\"     \r",
+											"pm.test(\"Response has valid tags.id\", () => {\r",
+											"    pm.expect(pm.response.json()[0].tags[0]).to.have.property('id');\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/pet/findByTags?tags={{tagName}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"pet",
+										"findByTags"
+									],
+									"query": [
+										{
+											"key": "tags",
+											"value": "{{tagName}}"
+										}
+									]
+								},
+								"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://petstore3.swagger.io/api/v3/pet/findByTags?tags=string' \\\r\n  -H 'accept: application/json'"
+							},
+							"response": []
+						},
+						{
+							"name": "Update existing pet",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if status code is 200\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"//This test should pass if content type is present\r",
+											"pm.test(\"Content-Type is present\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"});\r",
+											"//This test should pass if response time is less than 3000ms.\r",
+											"pm.test(\"Response time is less than 3000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+											"});\r",
+											"//This test should pass if status code name has string \"OK\".\r",
+											"pm.test(\"Status code name has string\", function () {\r",
+											"    pm.response.to.have.status(\"OK\");\r",
+											"});\r",
+											"const requestBody = JSON.parse(request.data);\r",
+											"const responseBody = pm.response.json();\r",
+											"//This test should pass if response body id matches the request body id.\r",
+											"pm.test(\"id matches\", function () {\r",
+											"    pm.expect(responseBody.id).to.eql(requestBody.id);\r",
+											"});\r",
+											"//This test should pass if response body category.id matches request body category.id.\r",
+											"pm.test(\"category.id matches\", function () {\r",
+											"    pm.expect(responseBody.category.id).to.eql(requestBody.category.id);\r",
+											"});\r",
+											"//This test should pass if response body category.name matches request body category.name.\r",
+											"pm.test(\"category.name matches\", function () {\r",
+											"    pm.expect(responseBody.category.name).to.eql(requestBody.category.name);\r",
+											"});\r",
+											"//This test should pass if response body name matches request body name\r",
+											"pm.test(\"name matches\", function () {\r",
+											"    pm.expect(responseBody.name).to.eql(requestBody.name);\r",
+											"});\r",
+											"\r",
+											"//This test should pass if response body photoURLS matches request body photoURLs.\r",
+											"pm.test(\"photoUrls matches\", function () {\r",
+											"    pm.expect(responseBody.photoUrls).to.eql(requestBody.photoUrls);\r",
+											"});\r",
+											"//This test should pass ifresponse body tags.id matches request body tags.id.\r",
+											"pm.test(\"tags.id matches\", function () {\r",
+											"    pm.expect(responseBody.tags.id).to.eql(requestBody.tags.id );\r",
+											"});\r",
+											"//This test should pass if response body tags.name matches request body tags.name.\r",
+											"pm.test(\"tags.name  matches\", function () {\r",
+											"    pm.expect(responseBody.tags.id ).to.eql(requestBody.tags.name );\r",
+											"});\r",
+											"//This test should pass if response body status matches request body status.\r",
+											"pm.test(\"status matches\", function () {\r",
+											"    pm.expect(responseBody.status).to.eql(requestBody.status);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 12345,\r\n  \"age\":8,\r\n  \"category\": {\r\n    \"id\": 1,\r\n    \"name\": \"dog\"\r\n  },\r\n  \"name\": \"tomyy\",\r\n  \"photoUrls\": [\r\n    \"https://example.com/photo.jpg\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 1,\r\n      \"name\": \"tag1\"\r\n    }\r\n  ],\r\n  \"status\": \"available\"\r\n  \r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/pet",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"pet"
+									]
+								},
+								"description": "Generated from cURL: curl -X 'PUT' \\\r\n  'https://petstore3.swagger.io/api/v3/pet' \\\r\n  -H 'accept: application/json' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"id\": 10,\r\n  \"name\": \"doggie\",\r\n  \"category\": {\r\n    \"id\": 1,\r\n    \"name\": \"Dogs\"\r\n  },\r\n  \"photoUrls\": [\r\n    \"string\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 0,\r\n      \"name\": \"string\"\r\n    }\r\n  ],\r\n  \"status\": \"available\"\r\n}'"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete a pet",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if status code is 200\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"//This test should pass if response body is 'Pet deleted'\r",
+											"pm.test(\"Response body is 'Pet deleted'\", function () {\r",
+											"    pm.expect(pm.response.text()).to.eql('Pet deleted');\r",
+											"});\r",
+											"//This test should pass if response time is less than 3000ms\r",
+											"pm.test(\"Response time is less than 3000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+											"});\r",
+											"//This test should pass if response status name is 'OK' \r",
+											"pm.test(\"Status code name has string\", function () {\r",
+											"    pm.response.to.have.status(\"OK\");\r",
+											"});\r",
+											"//This test should pass if response is valid JSON and not empty \r",
+											"pm.test(\"Response is valid JSON\", function () {\r",
+											"    pm.expect(pm.response.text()).to.be.a('string');\r",
+											"    pm.expect(pm.response.text()).to.not.be.empty;\r",
+											"});\r",
+											"\r",
+											"//pm.test(\"Deleted pet ID matches requested ID\", function () {\r",
+											" //   pm.expect(1).to.eql(String(1)); // Assuming petId is 1\r",
+											"//});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/pet/{{petID}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"pet",
+										"{{petID}}"
+									]
+								},
+								"description": "Generated from cURL: curl -X 'DELETE' \\\r\n  'https://petstore3.swagger.io/api/v3/pet/1' \\\r\n  -H 'accept: */*'"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "store",
+					"item": [
+						{
+							"name": "place an order for pet",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const response = pm.response.json();\r",
+											"pm.environment.set(\"orderID\", response.id);\r",
+											"//This test should pass if status code is 200\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"//This test should pass if Content-Type is present in the response headers.\r",
+											"pm.test(\"Content-Type is present\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"});\r",
+											"//This test should pass if response time is less than 3000ms.\r",
+											"pm.test(\"Response time is less than 3000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+											"});\r",
+											"//This test should pass if status code name has string \"OK\".    \r",
+											"pm.test(\"Status code name has string\", function () {\r",
+											"    pm.response.to.have.status(\"OK\");\r",
+											"});\r",
+											"const responseData = pm.response.json();\r",
+											"const requestData = JSON.parse(request.data);\r",
+											"const id = responseData.id;\r",
+											"//This test should pass if response body has petID matches request body petID.\r",
+											"pm.test(\"Response body had petID matches\", () => {\r",
+											"    pm.expect(id.petID).to.eql(requestData.petID);\r",
+											"});\r",
+											"//This test should pass if response body has status matches request body status.\r",
+											"pm.test(\"Response body has correct status\", function () {\r",
+											"    pm.expect(id.status).to.eql(requestData.petstatus);\r",
+											"});\r",
+											"//This test should pass if response body has complete matches request body complete\r",
+											"pm.test(\"Response body has correct complete\", function () {\r",
+											"    pm.expect(pm.response.json().complete).to.eql(true);\r",
+											"});\r",
+											"//This test should pass if response body quantity matches request body quantity.\r",
+											"pm.test(\"Response body has correct quantity\", function () {\r",
+											"    pm.expect(pm.response.json().quantity).to.eql(7);\r",
+											"});\r",
+											"//This test should pass if respnse body petID matches request body petID\r",
+											"pm.test(\"Response body has petId\",()=>{\r",
+											"    pm.expect(pm.response.json().petId).to.not.eql(null)\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 10178,\r\n  \"petId\": 198772,\r\n  \"quantity\": 7,\r\n  \"shipDate\": \"2025-08-20T07:18:35.905Z\",\r\n  \"status\": \"approved\",\r\n  \"complete\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/store/order",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"store",
+										"order"
+									]
+								},
+								"description": "Generated from cURL: curl -X 'POST' \\\r\n  'https://petstore3.swagger.io/api/v3/store/order' \\\r\n  -H 'accept: application/json' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"id\": 10,\r\n  \"petId\": 198772,\r\n  \"quantity\": 7,\r\n  \"shipDate\": \"2025-08-16T07:18:35.905Z\",\r\n  \"status\": \"approved\",\r\n  \"complete\": true\r\n}'"
+							},
+							"response": []
+						},
+						{
+							"name": "find purchase order by ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"console.log(\"Resolved orderID:\", pm.environment.get(\"orderID\"));\r",
+											"//This test should pass if stauts code is 200\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"//This test should pass if response time is less than 3000ms\r",
+											"pm.test(\"Response time is less than 3000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+											"});\r",
+											"//This test should pass if status code name has string \"OK\"\r",
+											"pm.test(\"Status code name has string\", function () {\r",
+											"    pm.response.to.have.status(\"OK\");\r",
+											"});\r",
+											"//This test should pass if response body has correct datatype   \r",
+											"let jsonData = pm.response.json();  \r",
+											"pm.test(\"Response body has correct datatype\", function () {\r",
+											"    pm.expect(jsonData.id).to.be.a(\"number\");\r",
+											"    pm.expect(jsonData.petId).to.be.a(\"number\");\r",
+											"    pm.expect(jsonData.quantity).to.be.a(\"number\");\r",
+											"    pm.expect(jsonData.shipDate).to.be.a(\"string\");\r",
+											"    pm.expect(jsonData.status).to.be.a(\"string\");\r",
+											"    pm.expect(jsonData.complete).to.be.a(\"boolean\");\r",
+											"});\r",
+											"//This test should pass if response body has correct properties  \r",
+											"pm.test(\"Order has id,petID,quantity,shipDate,status,complete\", function () {\r",
+											"    pm.expect(jsonData).to.have.property(\"id\");\r",
+											"    pm.expect(jsonData).to.have.property(\"petId\");\r",
+											"    pm.expect(jsonData).to.have.property(\"quantity\");\r",
+											"    pm.expect(jsonData).to.have.property(\"shipDate\");\r",
+											"    pm.expect(jsonData).to.have.property(\"status\");\r",
+											"    pm.expect(jsonData).to.have.property(\"complete\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/store/order/{{orderID}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"store",
+										"order",
+										"{{orderID}}"
+									]
+								},
+								"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://petstore3.swagger.io/api/v3/store/order/1' \\\r\n  -H 'accept: application/json'"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete purchase order by identifier",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if status code is 200\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"//This test should pass if response time is less than 2000ms\r",
+											"pm.test(\"Response time is less than 3000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+											"});\r",
+											"//This test should pass if response status code name has string \"OK\"\r",
+											"pm.test(\"Status code name has string\", function () {\r",
+											"    pm.response.to.have.status(\"OK\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/store/order/{{orderID}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"store",
+										"order",
+										"{{orderID}}"
+									]
+								},
+								"description": "Generated from cURL: curl -X 'DELETE' \\\r\n  'https://petstore3.swagger.io/api/v3/store/order/1' \\\r\n  -H 'accept: */*'"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "user",
+					"item": [
+						{
+							"name": "create user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if response return 500 it's a known bug\r",
+											"pm.test(\"Known Bug - POST /user returns 500\", function () {\r",
+											"    pm.expect(pm.response.code).to.eql(500);\r",
+											"});\r",
+											"//This test should pass if response time is less than 3000ms\r",
+											"pm.test(\"Response time is less than 3000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+											"});\r",
+											"//This test should pass if status code name has string \"Internal Server Error\"\r",
+											"pm.test(\"Status code name has string\", function () {\r",
+											"    pm.response.to.have.status(\"Internal Server Error\");\r",
+											"});\r",
+											"//This test should pass if content-type is present\r",
+											"pm.test(\"Content-Type is present\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "\r\n{\r\n    \"id\": 1002,\r\n  \"username\": \"demoUser02\",\r\n  \"firstName\": \"Demo\",\r\n  \"lastName\": \"User\",\r\n  \"email\": \"demo@01test.com\",\r\n  \"password\": \"pass123\",\r\n  \"phone\": \"9876543210\",\r\n  \"userStatus\": 1\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/user",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"user"
+									]
+								},
+								"description": "Generated from cURL: curl -X 'POST' \\\r\n  'https://petstore3.swagger.io/api/v3/user' \\\r\n  -H 'accept: application/json' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"id\": 10,\r\n  \"username\": \"theUser\",\r\n  \"firstName\": \"John\",\r\n  \"lastName\": \"James\",\r\n  \"email\": \"john@email.com\",\r\n  \"password\": \"12345\",\r\n  \"phone\": \"12345\",\r\n  \"userStatus\": 1\r\n}'"
+							},
+							"response": []
+						},
+						{
+							"name": "create list of user with given input array",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if the response code is 500\r",
+											"pm.test(\"Known Bug - POST /user/createWithList returns 500\", function () {\r",
+											"    pm.expect(pm.response.code).to.eql(500);\r",
+											"});\r",
+											"//This test should pass if response time is less than 3000ms.\r",
+											"pm.test(\"Response time is less than 3000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+											"});\r",
+											"//This test should pass if the status code name has string \"Internal Server Error\".\r",
+											"pm.test(\"Status code name has string\", function () {\r",
+											"    pm.response.to.have.status(\"Internal Server Error\");\r",
+											"});\r",
+											"//This test should pass if content-Type is presnt\r",
+											"pm.test(\"Content-Type is present\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n  {\r\n    \"id\": 10,\r\n    \"username\": \"theUser\",\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"James\",\r\n    \"email\": \"john@email.com\",\r\n    \"password\": \"12345\",\r\n    \"phone\": \"12345\",\r\n    \"userStatus\": 1\r\n  }\r\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/user/createWithList",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"user",
+										"createWithList"
+									]
+								},
+								"description": "Generated from cURL: curl -X 'POST' \\\r\n  'https://petstore3.swagger.io/api/v3/user/createWithList' \\\r\n  -H 'accept: application/json' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '[\r\n  {\r\n    \"id\": 10,\r\n    \"username\": \"theUser\",\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"James\",\r\n    \"email\": \"john@email.com\",\r\n    \"password\": \"12345\",\r\n    \"phone\": \"12345\",\r\n    \"userStatus\": 1\r\n  }\r\n]'"
+							},
+							"response": []
+						},
+						{
+							"name": "logs user into the system",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if status code is 200\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"//This test should pass if response time is less than 3000ms\r",
+											"pm.test(\"Response time is less than 3000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+											"});\r",
+											"//this test should pass if status code name has string \"OK\"\r",
+											"pm.test(\"Status code name has string\", function () {\r",
+											"    pm.response.to.have.status(\"OK\");\r",
+											"});\r",
+											"//This test should pass if response body contains \"Logged in user session\" string and session id is number\r",
+											"pm.test(\"session id is a valid number\", function () {\r",
+											"    var responseData = pm.response.text();\r",
+											"    var sessionId = responseData.match(/Logged in user session: (\\d+)/);\r",
+											"    pm.expect(sessionId).to.not.be.null; // Ensure it's found\r",
+											"    pm.expect(Number(sessionId[1])).to.be.a('number'); // Validate it's a number\r",
+											"});\r",
+											"//This test should pass if user logged in successfully and response body contains \"Logged in user session\" string\r",
+											"pm.test(\"User logged in successfully\", function () {\r",
+											"    var responseData = pm.response.text();\r",
+											"    pm.expect(responseData).to.include(\"Logged in user session\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/xml"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/user/login",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"user",
+										"login"
+									]
+								},
+								"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://petstore3.swagger.io/api/v3/user/login' \\\r\n  -H 'accept: application/xml'"
+							},
+							"response": []
+						},
+						{
+							"name": "get user by username",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"console.log(\"---- API Request Info ----\");\r",
+											"console.log(\"Method:\", pm.request.method);\r",
+											"console.log(\"URL:\", pm.request.url.toString());\r",
+											"//This test should pass if status code is 500\r",
+											"pm.test(\"Known Bug - GET /user/{{username}}} returns 500\", function () {\r",
+											"    pm.expect(pm.response.code).to.eql(500);\r",
+											"});\r",
+											"//This test should pass if response time is less than 3000ms\r",
+											"pm.test(\"Response time is less than 3000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+											"});\r",
+											"//This test should pass if status code name has string OK\r",
+											"pm.test(\"Status code name has string\", function () {\r",
+											"    pm.response.to.have.status(\"Internal Server Error\");\r",
+											"});\r",
+											"//This test should pass if content-Type is presnt\r",
+											"pm.test(\"Content-Type is present\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/user/{{username}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"user",
+										"{{username}}"
+									]
+								},
+								"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://petstore3.swagger.io/api/v3/user/abc' \\\r\n  -H 'accept: application/json'"
+							},
+							"response": []
+						},
+						{
+							"name": "update user resource",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"console.log(\"---- API Request Info ----\");\r",
+											"console.log(\"Method:\", pm.request.method);\r",
+											"console.log(\"URL:\", pm.request.url.toString());\r",
+											"//This test should pass if status code is 500\r",
+											"pm.test(\"Known Bug - PUT /user/{{username}}} returns 500\", function () {\r",
+											"    pm.expect(pm.response.code).to.eql(500);\r",
+											"});\r",
+											"//This test should pass if response time is less than 3000\r",
+											"pm.test(\"Response time is less than 3000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+											"});\r",
+											"//This test should pass if status code name has string \"Internal Server Error\"\r",
+											"pm.test(\"Status code name has string\", function () {\r",
+											"    pm.response.to.have.status(\"Internal Server Error\");\r",
+											"});\r",
+											"//This test should pass if content-Type is present\r",
+											"pm.test(\"Content-Type is present\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 10,\r\n  \"username\": \"theUser\",\r\n  \"firstName\": \"John\",\r\n  \"lastName\": \"James\",\r\n  \"email\": \"john@email.com\",\r\n  \"password\": \"12345\",\r\n  \"phone\": \"12345\",\r\n  \"userStatus\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://petstore3.swagger.io/api/v3/user/{{username}}",
+									"protocol": "https",
+									"host": [
+										"petstore3",
+										"swagger",
+										"io"
+									],
+									"path": [
+										"api",
+										"v3",
+										"user",
+										"{{username}}"
+									]
+								},
+								"description": "Generated from cURL: curl -X 'PUT' \\\r\n  'https://petstore3.swagger.io/api/v3/user/the%20user' \\\r\n  -H 'accept: */*' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"id\": 10,\r\n  \"username\": \"theUser\",\r\n  \"firstName\": \"John\",\r\n  \"lastName\": \"James\",\r\n  \"email\": \"john@email.com\",\r\n  \"password\": \"12345\",\r\n  \"phone\": \"12345\",\r\n  \"userStatus\": 1\r\n}'"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete the user resource",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"console.log(\"---- API Request Info ----\");\r",
+											"console.log(\"Method:\", pm.request.method);\r",
+											"console.log(\"URL:\", pm.request.url.toString());\r",
+											"//This test should pass if the response code is 500\r",
+											"pm.test(\"Known Bug - DELETE /user/{{username}}} returns 500\", function () {\r",
+											"    pm.expect(pm.response.code).to.eql(500);\r",
+											"});\r",
+											"//This test should pass if response time is less than 3000ms.\r",
+											"pm.test(\"Response time is less than 3000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+											"});\r",
+											"//This test should pass if response body status code name has string\r",
+											"pm.test(\"Status code name has string\", function () {\r",
+											"    pm.response.to.have.status(\"Internal Server Error\");\r",
+											"});\r",
+											"//This test should pass if content-Type is present\r",
+											"pm.test(\"Content-Type is present\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/user/{{username}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"user",
+										"{{username}}"
+									]
+								},
+								"description": "Generated from cURL: curl -X 'DELETE' \\\r\n  'https://petstore3.swagger.io/api/v3/user/the%20user' \\\r\n  -H 'accept: */*'"
+							},
+							"response": []
+						},
+						{
+							"name": "Logged out current user login session",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Response time is less than 3000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+											"});\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"User logged out\");\r",
+											"});\r",
+											"pm.test(\"Status code name has string\", function () {\r",
+											"    pm.response.to.have.status(\"OK\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "https://petstore3.swagger.io/api/v3/user/logout",
+									"protocol": "https",
+									"host": [
+										"petstore3",
+										"swagger",
+										"io"
+									],
+									"path": [
+										"api",
+										"v3",
+										"user",
+										"logout"
+									]
+								},
+								"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://petstore3.swagger.io/api/v3/user/logout' \\\r\n  -H 'accept: */*'"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "user v2 version",
+					"item": [
+						{
+							"name": "Create user'",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const requestData = JSON.parse(request.data);    \r",
+											"pm.environment.set(\"username\",requestData.username);\r",
+											"pm.environment.set(\"password\",requestData.password);\r",
+											"pm.collectionVariables.set(\"firstName\",requestData.firstName);\r",
+											"pm.collectionVariables.set(\"lastName\", requestData.lastName);\r",
+											"pm.collectionVariables.set(\"email\", requestData.email);\r",
+											"pm.collectionVariables.set(\"phone\", requestData.phone);\r",
+											"pm.collectionVariables.set(\"userStatus\", requestData.userStatus);\r",
+											"pm.collectionVariables.set(\"password\",requestData.password);\r",
+											"pm.collectionVariables.set(\"id\", requestData.id);\r",
+											"//This test should pass if status code is 200\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"//This test should pass if content type is present in the response header.\r",
+											"pm.test(\"Content-Type is present\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"});\r",
+											"//This test should pass if response time is less than 3000ms\r",
+											"pm.test(\"Response time is less than 3000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+											"});\r",
+											"//This test should pass if status code name has string \"OK\"\r",
+											"pm.test(\"Status code name has string\", function () {\r",
+											"    pm.response.to.have.status(\"OK\");\r",
+											"});\r",
+											"//This test should pass if response body has correct message\r",
+											"pm.test(\"Response body has correct message\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"1\");\r",
+											"});\r",
+											"//This test should pass if response body has correct code\r",
+											"pm.test(\"Response body has correct code\", function () {\r",
+											"    pm.expect(pm.response.json().code).to.equal(200);\r",
+											"});\r",
+											"//This test should pass if response body has correct type\r",
+											"pm.test(\"Response body has correct type\", function () { \r",
+											"    pm.expect(pm.response.json().type).to.equal(\"unknown\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 1899,\r\n  \"username\": \"anath\",\r\n  \"firstName\": \"John\",\r\n  \"lastName\": \"Doe\",\r\n  \"email\": \"john@example.com\",\r\n  \"password\": \"password123\",\r\n  \"phone\": \"1234567890\",\r\n  \"userStatus\": 1\r\n  \r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL1}}/user",
+									"host": [
+										"{{baseURL1}}"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create list of user with input array",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if status code is 200\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"//This test should pass if content-type is present in the response header.\r",
+											"pm.test(\"Content-Type is present\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"});\r",
+											"//This test should pass if response time is less than 3000ms.\r",
+											"pm.test(\"Response time is less than 3000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+											"});\r",
+											"//This test should pass if status code name has string\r",
+											"pm.test(\"Status code name has string\", function () {\r",
+											"    pm.response.to.have.status(\"OK\");\r",
+											"});\r",
+											"//This test should pass if response body has correct message\r",
+											"pm.test(\"Response body has correct message\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"ok\");\r",
+											"});\r",
+											"//This test should pass if response body has correct code\r",
+											"pm.test(\"Response body has correct code\", function () {\r",
+											"    pm.expect(pm.response.json().code).to.equal(200);\r",
+											"});\r",
+											"//This test should pass if response body has correct type\r",
+											"pm.test(\"Response body has correct type\", function () { \r",
+											"    pm.expect(pm.response.json().type).to.equal(\"unknown\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n  {\r\n    \"id\": 101,\r\n    \"username\": \"alice123\",\r\n    \"firstName\": \"Alice\",\r\n    \"lastName\": \"Wonder\",\r\n    \"email\": \"alice@example.com\",\r\n    \"password\": \"pass123\",\r\n    \"phone\": \"1234567890\",\r\n    \"userStatus\": 1\r\n  },\r\n  {\r\n    \"id\": 102,\r\n    \"username\": \"bob123\",\r\n    \"firstName\": \"Bob\",\r\n    \"lastName\": \"Marley\",\r\n    \"email\": \"bob@example.com\",\r\n    \"password\": \"pass456\",\r\n    \"phone\": \"9876543210\",\r\n    \"userStatus\": 1\r\n  }\r\n]\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL1}}/user/createWithList",
+									"host": [
+										"{{baseURL1}}"
+									],
+									"path": [
+										"user",
+										"createWithList"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login user end point",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if status code is 200\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"//This test should pass if response time is less than 3000\r",
+											"pm.test(\"Response time is less than 3000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+											"});\r",
+											"//This test should pass if status code name has string \r",
+											"pm.test(\"Status code name has string\", function () {\r",
+											"    pm.response.to.have.status(\"OK\");\r",
+											"});\r",
+											"//This test should pass if response body has correct message\r",
+											"pm.test(\"Response body has correct message\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"logged in user session\");\r",
+											"});\r",
+											"//This test should pass if response body has correct code\r",
+											"pm.test(\"Response body has correct code\", function () {\r",
+											"    pm.expect(pm.response.json().code).to.equal(200);\r",
+											"});\r",
+											"//This test should pass if response body has correct type\r",
+											"pm.test(\"Response body has correct type\", function () {\r",
+											"    pm.expect(pm.response.json().type).to.equal(\"unknown\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL1}}/user/login?username={{username}}&password={{password}}",
+									"host": [
+										"{{baseURL1}}"
+									],
+									"path": [
+										"user",
+										"login"
+									],
+									"query": [
+										{
+											"key": "username",
+											"value": "{{username}}"
+										},
+										{
+											"key": "password",
+											"value": "{{password}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get user by user name",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if status code is 200\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"//This test should pass if response time is less than 3000ms\r",
+											"pm.test(\"Response time is less than 3000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+											"});\r",
+											"//This test should pass if status code name has string\r",
+											"pm.test(\"Status code name has string\", function () {\r",
+											"    pm.response.to.have.status(\"OK\");\r",
+											"});\r",
+											"//this test should pass if response body has correct username\r",
+											"pm.test(\"Response body has correct username\", function () {\r",
+											"    pm.expect(pm.response.json().username).to.eql(pm.environment.get(\"username\"));\r",
+											"});\r",
+											"let jsonData = pm.response.json();\r",
+											"//This test should pass if response body has correct firstname\r",
+											"pm.test(\"Response body has correct firstName\", function () {\r",
+											"    pm.expect(jsonData.firstName).to.eql(pm.collectionVariables.get(\"firstName\"));\r",
+											"});\r",
+											"//This test should pass if response body has correct last name\r",
+											"pm.test(\"Response body has correct lastName\", function () {\r",
+											"    pm.expect(jsonData.lastName).to.eql(pm.collectionVariables.get(\"lastName\"));\r",
+											"});\r",
+											"//This test shuld pass if response body has correct email \r",
+											"pm.test(\"Response body has correct email\", function () {\r",
+											"    pm.expect(jsonData.email).to.eql(pm.collectionVariables.get(\"email\"));\r",
+											"});\r",
+											"//This test should pass if response body has correct phone\r",
+											"pm.test(\"Response body has correct phone\", function () {\r",
+											"    pm.expect(jsonData.phone).to.eql(pm.collectionVariables.get(\"phone\"));\r",
+											"});\r",
+											"//This test should pass if response body has correct userstatus\r",
+											"pm.test(\"Response body has correct userStatus\", function () {\r",
+											"    pm.expect(jsonData.userStatus).to.eql(pm.collectionVariables.get(\"userStatus\"));\r",
+											"});\r",
+											"//This test should pass if response body correct password\r",
+											"pm.test(\"Response body has correct password\", function () {\r",
+											"    pm.expect(jsonData.password).to.eql(pm.collectionVariables.get(\"password\"));\r",
+											"});\r",
+											"//This test should pass if response body has correct ID\r",
+											"pm.test(\"Response body has correct id\", function () {\r",
+											"    pm.expect(jsonData.id).to.eql(pm.collectionVariables.get(\"id\"));\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL1}}/user/{{username}}",
+									"host": [
+										"{{baseURL1}}"
+									],
+									"path": [
+										"user",
+										"{{username}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update user resource",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if status code is 200\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"//This test should pass if response time is less than 3000ms\r",
+											"pm.test(\"Response time is less than 3000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+											"});\r",
+											"//This test should pass if status codename has string\r",
+											"pm.test(\"Status code name has string\", function () {\r",
+											"    pm.response.to.have.status(\"OK\");\r",
+											"});\r",
+											"//This test should pass if content-Type is present\r",
+											"pm.test(\"Content-Type is present\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"});\r",
+											"var jsonData = pm.response.json();\r",
+											"//This test should pass if response body has correct message\r",
+											"pm.test(\"Response body has correct message\", function () {\r",
+											"    pm.expect(jsonData.message).to.eql(\"1\");\r",
+											"});\r",
+											"//This test should pass if response has correct code\r",
+											"pm.test(\"Response body has correct code\", function () {\r",
+											"    pm.expect(jsonData.code).to.eql(200);\r",
+											"});\r",
+											"//This test should pass if response body has corect type\r",
+											"pm.test(\"Response body has correct type\", function () {\r",
+											"    pm.expect(jsonData.type).to.eql(\"unknown\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 1,\r\n  \"username\": \"john123up\",\r\n  \"firstName\": \"Johnny\",\r\n  \"lastName\": \"Doe\",\r\n  \"email\": \"johnny@example.com\",\r\n  \"password\": \"newpass123\",\r\n  \"phone\": \"9876543210\",\r\n  \"userStatus\": 1\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL1}}/user/{{username}}",
+									"host": [
+										"{{baseURL1}}"
+									],
+									"path": [
+										"user",
+										"{{username}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete user resource",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if status code is 200\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"//This test should pass if response time is less than 3000ms\r",
+											"pm.test(\"Response time is less than 3000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+											"});\r",
+											"//This test should pass if status code name has string\r",
+											"pm.test(\"Status code name has string\", function () {\r",
+											"    pm.response.to.have.status(\"OK\");\r",
+											"});\r",
+											"//This test should pass if response body is not empty\r",
+											"pm.test(\"Response body is not empty\", function () {\r",
+											"    pm.expect(pm.response.text()).to.not.be.empty;\r",
+											"});\r",
+											"\r",
+											"var jsonData = pm.response.json();\r",
+											"//This test should pass if response body has correct message\r",
+											"pm.test(\"Response body has correct message\", function () {\r",
+											"    pm.expect(jsonData.message).to.eql(pm.environment.get(\"username\"));\r",
+											"});\r",
+											"//This test should pass if response body has correct code\r",
+											"pm.test(\"Response body has correct code\", function () {\r",
+											"    pm.expect(jsonData.code).to.eql(200);\r",
+											"});\r",
+											"//This test should pass if response body has correct type\r",
+											"pm.test(\"Response body has correct type\", function () {\r",
+											"    pm.expect(jsonData.type).to.eql(\"unknown\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL1}}/user/{{username}}",
+									"host": [
+										"{{baseURL1}}"
+									],
+									"path": [
+										"user",
+										"{{username}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Logout user end point",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//this test should pass if status code 200\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"//This test should pass if response time is less than 3000ms\r",
+											"pm.test(\"Response time is less than 3000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+											"});\r",
+											"//This test should pass if status code name has string\r",
+											"pm.test(\"Status code name has string\", function () {\r",
+											"    pm.response.to.have.status(\"OK\");\r",
+											"});\r",
+											"//This test should pass if response body contains user logged out\r",
+											"pm.test(\"Response body contains 'User logged out'\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"User logged out\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/user/logout",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"user",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Swagger petstore API testing suite Negative testcases",
+			"item": [
+				{
+					"name": "pet",
+					"item": [
+						{
+							"name": "Add a new pet to the store",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const response = pm.response.json();\r",
+											"pm.environment.set(\"petID\", response.id);\r",
+											"pm.environment.set(\"tagName\", response.tags[0].name);\r",
+											"pm.environment.set(\"petstatus\", response.status);\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Response time is less than 3000ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+											"});\r",
+											"\r",
+											"const requestData = pm.request.body ? JSON.parse(pm.request.body.raw) : {}; // Fixed the reference to request body\r",
+											"const pet = response; // Fixed the reference to response\r",
+											"pm.test(\"Response body contains name matches\", function () {\r",
+											"    pm.expect(pet.name).to.eql(requestData.name);\r",
+											"});\r",
+											"pm.test(\"Response body contains status matches\", function () {\r",
+											"    pm.expect(pet.status).to.eql(requestData.status);\r",
+											"});\r",
+											"pm.test(\"Response body contains photoUrls matches\", function () {\r",
+											"    pm.expect(pet.photoUrls).to.eql(requestData.photoUrls);\r",
+											"});\r",
+											"pm.test(\"Response body contains tags matches\", function () {\r",
+											"    pm.expect(pet.tags).to.eql(requestData.tags);\r",
+											"});\r",
+											"pm.test(\"Response body contains category.id matches\", function () {\r",
+											"    pm.expect(pet.category.id).to.eql(requestData.category.id);\r",
+											"});\r",
+											"pm.test(\"Response body contains category.name\", function () {\r",
+											"    pm.expect(pet.category.name).to.eql(requestData.category.name);\r",
+											"});\r",
+											"pm.test(\"Response body contains category matches\", function () {\r",
+											"    pm.expect(pet.category).to.eql(requestData.category);\r",
+											"});\r",
+											"pm.test(\"Response body contains id matches\", function () {\r",
+											"    pm.expect(pet.id).to.eql(requestData.id);\r",
+											"});\r",
+											"pm.test(\"Response body contains tags.name matches\", function () {   \r",
+											"    pm.expect(pet.tags[0].name).to.eql(requestData.tags[0].name);\r",
+											"});\r",
+											"pm.test(\"Response body contains tags.id matches\", function () {\r",
+											"    pm.expect(pet.tags[0].id).to.eql(requestData.tags[0].id); // Fixed syntax error\r",
+											"});\r",
+											"pm.test(\"Response body contains id\", function () {\r",
+											"    pm.expect(pet.id).to.not.be.null; // Fixed reference to response\r",
+											"});\r",
+											"pm.test(\"Content-Type is present\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 12345,\r\n  \"category\": {\r\n    \"id\": 1,\r\n    \"name\": \"dog\"\r\n  },\r\n  \"name\": \"tomyy\",\r\n  \"photoUrls\": [\r\n    \"https://example.com/photo.jpg\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 1,\r\n      \"name\": \"tag1\"\r\n    }\r\n  ],\r\n  \"status\": \"available\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/pet",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"pet"
+									]
+								},
+								"description": "Generated from cURL: curl -X 'POST' \\\r\n  'https://petstore3.swagger.io/api/v3/pet' \\\r\n  -H 'accept: application/json' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"id\": 10,\r\n  \"name\": \"doggie\",\r\n  \"category\": {\r\n    \"id\": 1,\r\n    \"name\": \"Dogs\"\r\n  },\r\n  \"photoUrls\": [\r\n    \"string\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 0,\r\n      \"name\": \"string\"\r\n    }\r\n  ],\r\n  \"status\": \"available\"\r\n}'"
+							},
+							"response": []
+						},
+						{
+							"name": "find the pet by ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if status code is not be 200\r",
+											"pm.test(\"Negative testcase- status code should not be 200\",()=> {\r",
+											"    pm.expect(pm.response.code).not.to.eql(200);\r",
+											"});\r",
+											"//This test should pass if response message should be error message\r",
+											"pm.test(\"Negative testcase- response message should be error message\",()=> {\r",
+											"    pm.expect(pm.response.text()).to.not.be.empty;\r",
+											"});\r",
+											"//This test should pass if status code should be 400 or 500\r",
+											"pm.test(\"Negative testcase-status code should be 400 or 500\",()=> {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400,500]);\r",
+											"});\r",
+											"//This test should pass if status code is 400\r",
+											"pm.test(\"Negative testcase status code is 400 when request is invalid\",()=> {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/pet/1578987654345678op",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"pet",
+										"1578987654345678op"
+									]
+								},
+								"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://petstore3.swagger.io/api/v3/pet/1' \\\r\n  -H 'accept: application/json'"
+							},
+							"response": []
+						},
+						{
+							"name": "find pet by status",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if status code is not be 200\r",
+											"pm.test(\"Negative testcase- status code should not be 200\",()=> {\r",
+											"    pm.expect(pm.response.code).not.to.eql(200);\r",
+											"});\r",
+											"//This test should pass if response message should be error message\r",
+											"pm.test(\"Negative testcase- response message should be error message\",()=> {\r",
+											"    pm.expect(pm.response.text()).to.not.be.empty;\r",
+											"});\r",
+											"//This test should pass if status code should be 400 or 500\r",
+											"pm.test(\"Negative testcase-status code should be 400 or 500\",()=> {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400,500]);\r",
+											"});\r",
+											"//This test should pass if status code is 400\r",
+											"pm.test(\"Negative testcase status code is 400 when request is invalid\",()=> {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/pet/findByStatus?status",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"pet",
+										"findByStatus"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": null
+										}
+									]
+								},
+								"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://petstore3.swagger.io/api/v3/pet/findByStatus?status=available' \\\r\n  -H 'accept: application/json'"
+							},
+							"response": []
+						},
+						{
+							"name": "find pet by tags",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://petstore3.swagger.io/api/v3/pet/findByTags?tags=string",
+									"protocol": "https",
+									"host": [
+										"petstore3",
+										"swagger",
+										"io"
+									],
+									"path": [
+										"api",
+										"v3",
+										"pet",
+										"findByTags"
+									],
+									"query": [
+										{
+											"key": "tags",
+											"value": "string"
+										}
+									]
+								},
+								"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://petstore3.swagger.io/api/v3/pet/findByTags?tags=string' \\\r\n  -H 'accept: application/json'"
+							},
+							"response": []
+						},
+						{
+							"name": "Update existing pet",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if status code is not be 200\r",
+											"pm.test(\"Negative testcase- status code should not be 200\",()=> {\r",
+											"    pm.expect(pm.response.code).not.to.eql(200);\r",
+											"});\r",
+											"//This test should pass if response message should be error message\r",
+											"pm.test(\"Negative testcase- response message should be error message\",()=> {\r",
+											"    pm.expect(pm.response.text()).to.not.be.empty;\r",
+											"});\r",
+											"//This test should pass if status code should be 400 or 500\r",
+											"pm.test(\"Negative testcase-status code should be 400 or 500\",()=> {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400,500]);\r",
+											"});\r",
+											"//This test should pass if status code is 400\r",
+											"pm.test(\"Negative testcase status code is 400 when request is invalid\",()=> {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": q,\r\n  \"name\": \"doggie\",\r\n  \"category\": {\r\n    \"id\": 1,\r\n    \"name\": \"Dogs\"\r\n  },\r\n  \"photoUrls\": [\r\n    \"string\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 0,\r\n      \"name\": \"string\"\r\n    }\r\n  ],\r\n  \"status\": \"available\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://petstore3.swagger.io/api/v3/pet",
+									"protocol": "https",
+									"host": [
+										"petstore3",
+										"swagger",
+										"io"
+									],
+									"path": [
+										"api",
+										"v3",
+										"pet"
+									]
+								},
+								"description": "Generated from cURL: curl -X 'PUT' \\\r\n  'https://petstore3.swagger.io/api/v3/pet' \\\r\n  -H 'accept: application/json' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"id\": 10,\r\n  \"name\": \"doggie\",\r\n  \"category\": {\r\n    \"id\": 1,\r\n    \"name\": \"Dogs\"\r\n  },\r\n  \"photoUrls\": [\r\n    \"string\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 0,\r\n      \"name\": \"string\"\r\n    }\r\n  ],\r\n  \"status\": \"available\"\r\n}'"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete a pet",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if status code is not be 200\r",
+											"pm.test(\"Negative testcase- status code should not be 200\",()=> {\r",
+											"    pm.expect(pm.response.code).not.to.eql(200);\r",
+											"});\r",
+											"//This test should pass if response message should be error message\r",
+											"pm.test(\"Negative testcase- response message should be error message\",()=> {\r",
+											"    pm.expect(pm.response.text()).to.not.be.empty;\r",
+											"});\r",
+											"//This test should pass if status code should be 400 or 500\r",
+											"pm.test(\"Negative testcase-status code should be 400 or 500\",()=> {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400,500]);\r",
+											"});\r",
+											"//This test should pass if status code is 400\r",
+											"pm.test(\"Negative testcase status code is 400 when request is invalid\",()=> {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "https://petstore3.swagger.io/api/v3/pet/jj",
+									"protocol": "https",
+									"host": [
+										"petstore3",
+										"swagger",
+										"io"
+									],
+									"path": [
+										"api",
+										"v3",
+										"pet",
+										"jj"
+									]
+								},
+								"description": "Generated from cURL: curl -X 'DELETE' \\\r\n  'https://petstore3.swagger.io/api/v3/pet/1' \\\r\n  -H 'accept: */*'"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "store",
+					"item": [
+						{
+							"name": "place an order for pet",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if status code is not be 200\r",
+											"pm.test(\"Negative testcase- status code should not be 200\",()=> {\r",
+											"    pm.expect(pm.response.code).not.to.eql(200);\r",
+											"});\r",
+											"//This test should pass if response message should be error message\r",
+											"pm.test(\"Negative testcase- response message should be error message\",()=> {\r",
+											"    pm.expect(pm.response.text()).to.not.be.empty;\r",
+											"});\r",
+											"//This test should pass if status code should be 400 or 500\r",
+											"pm.test(\"Negative testcase-status code should be 400 or 500\",()=> {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400,500]);\r",
+											"});\r",
+											"//This test should pass if status code is 400\r",
+											"pm.test(\"Negative testcase status code is 400 when request is invalid\",()=> {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 10a,\r\n  \"petId\": 198772,\r\n  \"quantity\": 7,\r\n  \"shipDate\": \"2025-08-16T07:18:35.905Z\",\r\n  \"status\": \"approved\",\r\n  \"complete\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/store/order",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"store",
+										"order"
+									]
+								},
+								"description": "Generated from cURL: curl -X 'POST' \\\r\n  'https://petstore3.swagger.io/api/v3/store/order' \\\r\n  -H 'accept: application/json' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"id\": 10,\r\n  \"petId\": 198772,\r\n  \"quantity\": 7,\r\n  \"shipDate\": \"2025-08-16T07:18:35.905Z\",\r\n  \"status\": \"approved\",\r\n  \"complete\": true\r\n}'"
+							},
+							"response": []
+						},
+						{
+							"name": "find purchase order by ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if status code is not be 200\r",
+											"pm.test(\"Negative testcase- status code should not be 200\",()=> {\r",
+											"    pm.expect(pm.response.code).not.to.eql(200);\r",
+											"});\r",
+											"//This test should pass if response message should be error message\r",
+											"pm.test(\"Negative testcase- response message should be error message\",()=> {\r",
+											"    pm.expect(pm.response.text()).to.not.be.empty;\r",
+											"});\r",
+											"//This test should pass if status code should be 400 or 500\r",
+											"pm.test(\"Negative testcase-status code should be 400 or 500\",()=> {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400,500]);\r",
+											"});\r",
+											"//This test should pass if status code is 400\r",
+											"pm.test(\"Negative testcase status code is 400 when request is invalid\",()=> {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/store/order/1a",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"store",
+										"order",
+										"1a"
+									]
+								},
+								"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://petstore3.swagger.io/api/v3/store/order/1' \\\r\n  -H 'accept: application/json'"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete purchase order by identifier",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if status code is not be 200\r",
+											"pm.test(\"Negative testcase- status code should not be 200\",()=> {\r",
+											"    pm.expect(pm.response.code).not.to.eql(200);\r",
+											"});\r",
+											"//This test should pass if response message should be error message\r",
+											"pm.test(\"Negative testcase- response message should be error message\",()=> {\r",
+											"    pm.expect(pm.response.text()).to.not.be.empty;\r",
+											"});\r",
+											"//This test should pass if status code should be 400 or 500\r",
+											"pm.test(\"Negative testcase-status code should be 400 or 500\",()=> {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400,500]);\r",
+											"});\r",
+											"//This test should pass if status code is 400\r",
+											"pm.test(\"Negative testcase status code is 400 when request is invalid\",()=> {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/store/order/1a",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"store",
+										"order",
+										"1a"
+									]
+								},
+								"description": "Generated from cURL: curl -X 'DELETE' \\\r\n  'https://petstore3.swagger.io/api/v3/store/order/1' \\\r\n  -H 'accept: */*'"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "user",
+					"item": [
+						{
+							"name": "create user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if status code is not be 200\r",
+											"pm.test(\"Negative testcase- status code should not be 200\",()=> {\r",
+											"    pm.expect(pm.response.code).not.to.eql(200);\r",
+											"});\r",
+											"//This test should pass if response message should be error message\r",
+											"pm.test(\"Negative testcase- response message should be error message\",()=> {\r",
+											"    pm.expect(pm.response.text()).to.not.be.empty;\r",
+											"});\r",
+											"//This test should pass if status code should be 400 or 500\r",
+											"pm.test(\"Negative testcase-status code should be 400 or 500\",()=> {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400,500]);\r",
+											"});\r",
+											"//This test should pass if status code is 400\r",
+											"pm.test(\"Negative testcase status code is 400 when request is invalid\",()=> {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 10a,\r\n  \"username\": \"theUser\",\r\n  \"firstName\": \"John\",\r\n  \"lastName\": \"James\",\r\n  \"email\": \"john@email.com\",\r\n  \"password\": \"12345\",\r\n  \"phone\": \"12345\",\r\n  \"userStatus\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/user",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"user"
+									]
+								},
+								"description": "Generated from cURL: curl -X 'POST' \\\r\n  'https://petstore3.swagger.io/api/v3/user' \\\r\n  -H 'accept: application/json' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"id\": 10,\r\n  \"username\": \"theUser\",\r\n  \"firstName\": \"John\",\r\n  \"lastName\": \"James\",\r\n  \"email\": \"john@email.com\",\r\n  \"password\": \"12345\",\r\n  \"phone\": \"12345\",\r\n  \"userStatus\": 1\r\n}'"
+							},
+							"response": []
+						},
+						{
+							"name": "create list of user with given input array",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if status code is not be 200\r",
+											"pm.test(\"Negative testcase- status code should not be 200\",()=> {\r",
+											"    pm.expect(pm.response.code).not.to.eql(200);\r",
+											"});\r",
+											"//This test should pass if response message should be error message\r",
+											"pm.test(\"Negative testcase- response message should be error message\",()=> {\r",
+											"    pm.expect(pm.response.text()).to.not.be.empty;\r",
+											"});\r",
+											"//This test should pass if status code should be 400 or 500\r",
+											"pm.test(\"Negative testcase-status code should be 400 or 500\",()=> {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400,500]);\r",
+											"});\r",
+											"//This test should pass if status code is 400\r",
+											"pm.test(\"Negative testcase status code is 400 when request is invalid\",()=> {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n  {\r\n    \"id\": 10,\r\n    \"username\": \"theUser\",\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"James\",\r\n    \"email\": \"john@email.com\",\r\n    \"password\": \"12345\",\r\n    \"phone\": \"12345\",\r\n    \"userStatus\": 1\r\n  }\r\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/user/createWithList",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"user",
+										"createWithList"
+									]
+								},
+								"description": "Generated from cURL: curl -X 'POST' \\\r\n  'https://petstore3.swagger.io/api/v3/user/createWithList' \\\r\n  -H 'accept: application/json' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '[\r\n  {\r\n    \"id\": 10,\r\n    \"username\": \"theUser\",\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"James\",\r\n    \"email\": \"john@email.com\",\r\n    \"password\": \"12345\",\r\n    \"phone\": \"12345\",\r\n    \"userStatus\": 1\r\n  }\r\n]'"
+							},
+							"response": []
+						},
+						{
+							"name": "logs user into the system",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/xml"
+									}
+								],
+								"url": {
+									"raw": "https://petstore3.swagger.io/api/v3/user/login",
+									"protocol": "https",
+									"host": [
+										"petstore3",
+										"swagger",
+										"io"
+									],
+									"path": [
+										"api",
+										"v3",
+										"user",
+										"login"
+									]
+								},
+								"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://petstore3.swagger.io/api/v3/user/login' \\\r\n  -H 'accept: application/xml'"
+							},
+							"response": []
+						},
+						{
+							"name": "get user by username",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if status code is not be 200\r",
+											"pm.test(\"Negative testcase- status code should not be 200\",()=> {\r",
+											"    pm.expect(pm.response.code).not.to.eql(200);\r",
+											"});\r",
+											"//This test should pass if response message should be error message\r",
+											"pm.test(\"Negative testcase- response message should be error message\",()=> {\r",
+											"    pm.expect(pm.response.text()).to.not.be.empty;\r",
+											"});\r",
+											"//This test should pass if status code should be 400 or 500\r",
+											"pm.test(\"Negative testcase-status code should be 400 or 500\",()=> {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400,500]);\r",
+											"});\r",
+											"//This test should pass if status code is 500\r",
+											"pm.test(\"Negative testcase status code is 500 when request is invalid\",()=> {\r",
+											"    pm.response.to.have.status(500);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/user/abc",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"user",
+										"abc"
+									]
+								},
+								"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://petstore3.swagger.io/api/v3/user/abc' \\\r\n  -H 'accept: application/json'"
+							},
+							"response": []
+						},
+						{
+							"name": "update user resource",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if status code is not be 200\r",
+											"pm.test(\"Negative testcase- status code should not be 200\",()=> {\r",
+											"    pm.expect(pm.response.code).not.to.eql(200);\r",
+											"});\r",
+											"//This test should pass if response message should be error message\r",
+											"pm.test(\"Negative testcase- response message should be error message\",()=> {\r",
+											"    pm.expect(pm.response.text()).to.not.be.empty;\r",
+											"});\r",
+											"//This test should pass if status code should be 400 or 500\r",
+											"pm.test(\"Negative testcase-status code should be 400 or 500\",()=> {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400,500]);\r",
+											"});\r",
+											"//This test should pass if status code is 500\r",
+											"pm.test(\"Negative testcase status code is 500 when request is invalid\",()=> {\r",
+											"    pm.response.to.have.status(500);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 10,\r\n  \"username\": \"theUser\",\r\n  \"firstName\": \"John\",\r\n  \"lastName\": \"James\",\r\n  \"email\": \"john@email.com\",\r\n  \"password\": \"12345\",\r\n  \"phone\": \"12345\",\r\n  \"userStatus\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/user/the%20user",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"user",
+										"the%20user"
+									]
+								},
+								"description": "Generated from cURL: curl -X 'PUT' \\\r\n  'https://petstore3.swagger.io/api/v3/user/the%20user' \\\r\n  -H 'accept: */*' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"id\": 10,\r\n  \"username\": \"theUser\",\r\n  \"firstName\": \"John\",\r\n  \"lastName\": \"James\",\r\n  \"email\": \"john@email.com\",\r\n  \"password\": \"12345\",\r\n  \"phone\": \"12345\",\r\n  \"userStatus\": 1\r\n}'"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete the user resource",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if status code is not be 200\r",
+											"pm.test(\"Negative testcase- status code should not be 200\",()=> {\r",
+											"    pm.expect(pm.response.code).not.to.eql(200);\r",
+											"});\r",
+											"//This test should pass if response message should be error message\r",
+											"pm.test(\"Negative testcase- response message should be error message\",()=> {\r",
+											"    pm.expect(pm.response.text()).to.not.be.empty;\r",
+											"});\r",
+											"//This test should pass if status code should be 400 or 500\r",
+											"pm.test(\"Negative testcase-status code should be 400 or 500\",()=> {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400,500]);\r",
+											"});\r",
+											"//This test should pass if status code is 500\r",
+											"pm.test(\"Negative testcase status code is 500 when request is invalid\",()=> {\r",
+											"    pm.response.to.have.status(500);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/user/the%20user",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"user",
+										"the%20user"
+									]
+								},
+								"description": "Generated from cURL: curl -X 'DELETE' \\\r\n  'https://petstore3.swagger.io/api/v3/user/the%20user' \\\r\n  -H 'accept: */*'"
+							},
+							"response": []
+						},
+						{
+							"name": "Logged out current user login session",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/user/logout",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"user",
+										"logout"
+									]
+								},
+								"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://petstore3.swagger.io/api/v3/user/logout' \\\r\n  -H 'accept: */*'"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "user v2 version",
+					"item": [
+						{
+							"name": "Create user'",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const requestData = JSON.parse(request.data);    \r",
+											"pm.environment.set(\"username\",requestData.username);\r",
+											"pm.environment.set(\"password\",requestData.password);\r",
+											"\r",
+											"//This test should pass if status code is not be 200\r",
+											"pm.test(\"Negative testcase- status code should not be 200\",()=> {\r",
+											"    pm.expect(pm.response.code).not.to.eql(200);\r",
+											"});\r",
+											"//This test should pass if response message should be error message\r",
+											"pm.test(\"Negative testcase- response message should be error message\",()=> {\r",
+											"    pm.expect(pm.response.text()).to.not.be.empty;\r",
+											"});\r",
+											"//This test should pass if status code should be 400 or 500\r",
+											"pm.test(\"Negative testcase-status code should be 400 or 500\",()=> {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400,500]);\r",
+											"});\r",
+											"//This test should pass if status code is 400\r",
+											"pm.test(\"Negative testcase status code is 400 when request is invalid\",()=> {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 111,\r\n  \"username\": \"suma\",\r\n  \"firstName\": \"John\",\r\n  \"lastName\": \"Doe\",\r\n  \"email\": \"john@example.com\",\r\n  \"password\": \"password123\",\r\n  \"phone\": \"1234567890\",\r\n  \"userStatus\": 1\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL1}}/user",
+									"host": [
+										"{{baseURL1}}"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create list of user with input array",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if status code is not be 200\r",
+											"pm.test(\"Negative testcase- status code should not be 200\",()=> {\r",
+											"    pm.expect(pm.response.code).not.to.eql(200);\r",
+											"});\r",
+											"//This test should pass if response message should be error message\r",
+											"pm.test(\"Negative testcase- response message should be error message\",()=> {\r",
+											"    pm.expect(pm.response.text()).to.not.be.empty;\r",
+											"});\r",
+											"//This test should pass if status code should be 400 or 500\r",
+											"pm.test(\"Negative testcase-status code should be 400 or 500\",()=> {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400,500]);\r",
+											"});\r",
+											"//This test should pass if status code is 400\r",
+											"pm.test(\"Negative testcase status code is 400 when request is invalid\",()=> {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n  {\r\n    \"id\": rrdf,\r\n    \"username\":\"gfh\",\r\n    \"firstName\": \"Alice\",\r\n    \"lastName\": \"Wonder\",\r\n    \"email\": \"alice@example.com\",\r\n    \"password\": \"pass123\",\r\n    \"phone\": \"1234567890\",\r\n    \"userStatus\": 1\r\n  },\r\n  {\r\n    \"id\": 102,\r\n    \"username\": \"bob123\",\r\n    \"firstName\": \"Bob\",\r\n    \"lastName\": \"Marley\",\r\n    \"email\": \"bob@example.com\",\r\n    \"password\": \"pass456\",\r\n    \"phone\": \"9876543210\",\r\n    \"userStatus\": 1\r\n  }\r\n]\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL1}}/user/createWithList",
+									"host": [
+										"{{baseURL1}}"
+									],
+									"path": [
+										"user",
+										"createWithList"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login user end point",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if login with wrong credentials\r",
+											"pm.test(\"Login should fail with wrong credentials\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"//This test should pass if login without password\r",
+											"pm.test(\"Login should fail without password\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL1}}/user/login?username={{username}}&password=sdnjfnj",
+									"host": [
+										"{{baseURL1}}"
+									],
+									"path": [
+										"user",
+										"login"
+									],
+									"query": [
+										{
+											"key": "username",
+											"value": "{{username}}"
+										},
+										{
+											"key": "password",
+											"value": "sdnjfnj"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get user by user name",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "Update user resource",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if status code is not be 200\r",
+											"pm.test(\"Negative testcase- status code should not be 200\",()=> {\r",
+											"    pm.expect(pm.response.code).not.to.eql(200);\r",
+											"});\r",
+											"//This test should pass if response message should be error message\r",
+											"pm.test(\"Negative testcase- response message should be error message\",()=> {\r",
+											"    pm.expect(pm.response.text()).to.not.be.empty;\r",
+											"});\r",
+											"//This test should pass if status code should be 400 or 500\r",
+											"pm.test(\"Negative testcase-status code should be 400 or 500\",()=> {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400,500]);\r",
+											"});\r",
+											"//This test should pass if status code is 400\r",
+											"pm.test(\"Negative testcase status code is 400 when request is invalid\",()=> {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": a,\r\n  \"username\": \"john123up\",\r\n  \"firstName\": \"Johnny\",\r\n  \"lastName\": \"Doe\",\r\n  \"email\": \"johnny@example.com\",\r\n  \"password\": \"newpass123\",\r\n  \"phone\": \"9876543210\",\r\n  \"userStatus\": 1\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://petstore.swagger.io/v2/user/{{username}}",
+									"protocol": "https",
+									"host": [
+										"petstore",
+										"swagger",
+										"io"
+									],
+									"path": [
+										"v2",
+										"user",
+										"{{username}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete user resource",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if status code is not be 200\r",
+											"pm.test(\"Negative testcase- status code should not be 200\",()=> {\r",
+											"    pm.expect(pm.response.code).not.to.eql(200);\r",
+											"});\r",
+											"//This test should pass if response message should be error message\r",
+											"pm.test(\"Negative testcase- response message should be error message\",()=> {\r",
+											"    pm.response.to.have.status(\"Not Found\");\r",
+											"});\r",
+											"//This test should pass if status code should be 404 or 500\r",
+											"pm.test(\"Negative testcase-status code should be 404 or 500\",()=> {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([404,500]);\r",
+											"});\r",
+											"//This test should pass if status code is 404\r",
+											"pm.test(\"Negative testcase status code is 404 when request is invalid\",()=> {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "https://petstore.swagger.io/v2/user/{{username}}",
+									"protocol": "https",
+									"host": [
+										"petstore",
+										"swagger",
+										"io"
+									],
+									"path": [
+										"v2",
+										"user",
+										"{{username}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Logout user end point",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//This test should pass if logout without login \r",
+											"pm.test(\"Logout without login should fail\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL1}}/user/logout",
+									"host": [
+										"{{baseURL1}}"
+									],
+									"path": [
+										"user",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "firstName",
+			"value": ""
+		},
+		{
+			"key": "lastName",
+			"value": ""
+		},
+		{
+			"key": "email",
+			"value": ""
+		},
+		{
+			"key": "phone",
+			"value": ""
+		},
+		{
+			"key": "userStatus",
+			"value": ""
+		},
+		{
+			"key": "password",
+			"value": ""
+		},
+		{
+			"key": "id",
+			"value": ""
+		}
+	]
+}
